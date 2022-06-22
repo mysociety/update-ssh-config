@@ -10,7 +10,7 @@ from os import getenv
 # MYSOCIETY_USERNAME environment variable before running this script
 username = getenv("MYSOCIETY_USERNAME", getuser())
 
-j = subprocess.run(["ssh", "raven.ukcod.org.uk", "cat" ,"/data/vhosts.json"], capture_output=True)
+j = subprocess.run(["ssh", f"{username}@raven.ukcod.org.uk", "cat" ,"/data/vhosts.json"], capture_output=True)
 j = json.loads(j.stdout)
 
 def host_out(host, server):
