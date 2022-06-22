@@ -1,0 +1,8 @@
+This script copies the public vhosts.json file from raven.ukcod.org.uk and
+creates an SSH config file to make server connecting easier. It will add
+vhost-app and vhost-db entries for every vhost in the data.
+
+If your mySociety username is different to your local username set it in the
+MYSOCIETY_USERNAME environment variable before running this script.
+
+Add "Include mysociety_vhosts" to your ~/.ssh/config to include this new file.
