@@ -9,8 +9,9 @@ from os import getenv
 # If your mySociety username is different to your local username set it in the
 # MYSOCIETY_USERNAME environment variable before running this script
 username = getenv("MYSOCIETY_USERNAME", getuser())
+jumpbox = getenv("MYSOCIETY_JUMPBOX", "raven.ukcod.org.uk")
 
-j = subprocess.run(["ssh", "raven.ukcod.org.uk", "cat" ,"/data/vhosts.json"], capture_output=True)
+j = subprocess.run(["ssh", jumpbox, "cat" ,"/data/vhosts.json"], capture_output=True)
 j = json.loads(j.stdout)
 
 def host_out(host, server):
@@ -19,7 +20,7 @@ def host_out(host, server):
   User {username}
   IdentityFile ~/.ssh/id_rsa
   ForwardAgent yes
-  ProxyJump raven.ukcod.org.uk
+  ProxyJump {jumpbox}
 """
 
 def process():
