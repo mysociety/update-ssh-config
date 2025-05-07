@@ -9,7 +9,7 @@ from os import getenv
 # If your mySociety username is different to your local username set it in the
 # MYSOCIETY_USERNAME environment variable before running this script
 username = getenv("MYSOCIETY_USERNAME", getuser())
-jumpbox = getenv("MYSOCIETY_JUMPBOX", "raven.ukcod.org.uk")
+jumpbox = getenv("MYSOCIETY_JUMPBOX", "srv-2ssio.srv.mysociety.org")
 
 j = subprocess.run(["ssh", jumpbox, "cat" ,"/data/vhosts.json"], capture_output=True)
 j = json.loads(j.stdout)
@@ -27,10 +27,11 @@ def process():
     with open(expanduser("~/.ssh/mysociety_hosts"), "w") as f:
         for v, data in j['vhosts'].items():
             ct = data.get('crontab')
-            server = data['servers'][0]
+            servers = data['servers']
             if ct and ct not in (1, 'only-one'):
-                server = ct
-            print(host_out(f"{v}-app", server), file=f)
+                servers = [ct]
+            for i, server in enumerate(servers, 1):
+                print(host_out(f"{v}-app{i if i > 1 else ''}", server), file=f)
             if 'databases' in data:
                 database = data['databases'][0]
                 print(host_out(f"{v}-db", j['databases'][database]['host']), file=f)
